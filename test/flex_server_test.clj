@@ -1,5 +1,6 @@
 (ns flex-server-test
   (:require [clojure.test :refer :all]
+            [clojure.test.check.generators :as gen]
             [flex-server :refer [scramble?]]))
 
 (defn scramble [word]
@@ -15,6 +16,5 @@
   (is (true? (scramble? "recognnized" "recognized"))))
 
 (deftest test-shuffles
-  (is (true?
-       (let [word "unpredictable"]
-         (scramble? (scramble word) word)))))
+  (let [samples (remove empty? (gen/sample gen/string-alphanumeric))]
+    (is (every? #(scramble? (scramble %) %) samples))))
