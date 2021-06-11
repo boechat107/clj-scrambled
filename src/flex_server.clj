@@ -1,10 +1,15 @@
 (ns flex-server
   (:require [reitit.ring :as ring]
-            [ring.adapter.jetty :as jetty]))
+            [reitit.ring.coercion :as coercion]
+            [reitit.ring.middleware.muuntaja :as muuntaja]
+            [reitit.ring.middleware.parameters :as parameters]
+            [ring.adapter.jetty :as jetty]
+            [muuntaja.core :as m]))
 
-(defn scramble? [scrambled word]
-  ;; str -> str -> bool
-  "Returns 'true' if 'word' can be arranged from 'scrambled'."
+(defn scramble?
+  "str, str -> bool
+  Returns 'true' if 'word' can be arranged from 'scrambled'."
+  [scrambled word]
   ;; 1. First we count the available chars in "scrambled".
   ;; 2. For each char in "word", we update the previous count or
   ;; cancel the procedure if no more of char can be found.
@@ -23,9 +28,16 @@
   (ring/ring-handler
    (ring/router
     ["/is-scrambled"
-     {:get {:handler (fn [{{{:keys [scrambled word]} :query} :parameters}]
+     {:get {:handler (fn [{{:strs [scrambled word]} :query-params}]
                        {:status 200
-                        :body {:scrambled? (scramble? scrambled word)}})}}])
+                        :body {:scrambled? (scramble? scrambled word)}})}}]
+    ;; Middleware configuration for this router.
+    {:data {:muuntaja m/instance
+            :middleware [;; Content negotiation, request/response formatting.
+                         muuntaja/format-middleware
+                         ;; Parse URL encoded query parameters.
+                         parameters/parameters-middleware
+                         ]}})
    (ring/create-default-handler)))
 
 (defn start-http-server [app]

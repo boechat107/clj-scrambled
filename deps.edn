@@ -1,6 +1,8 @@
 {:deps
  {ring/ring-jetty-adapter {:mvn/version "1.9.2"}
-  metosin/reitit-ring {:mvn/version "0.5.13"}}
+  metosin/reitit-ring {:mvn/version "0.5.13"}
+  metosin/reitit-middleware {:mvn/version "0.5.13"}
+  metosin/muuntaja {:mvn/version "0.6.8"}}
 
  :aliases
  {:test
@@ -8,6 +10,7 @@
    :extra-deps {io.github.cognitect-labs/test-runner
                 {:git/url "https://github.com/cognitect-labs/test-runner.git"
                  :sha "9e35c979860c75555adaff7600070c60004a0f44"}
-                org.clojure/test.check {:mvn/version "1.1.0"}}
+                org.clojure/test.check {:mvn/version "1.1.0"}
+                ring/ring-mock {:mvn/version "0.4.0"}}
    :main-opts ["-m" "cognitect.test-runner"]
    :exec-fn cognitect.test-runner.api/test}}}
