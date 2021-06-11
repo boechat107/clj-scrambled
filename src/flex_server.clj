@@ -1,4 +1,6 @@
-(ns flex-server)
+(ns flex-server
+  (:require [reitit.ring :as ring]
+            [ring.adapter.jetty :as jetty]))
 
 (defn scramble? [scrambled word]
   ;; str -> str -> bool
@@ -17,6 +19,18 @@
          empty?
          not)))
 
+(def web-app
+  (ring/ring-handler
+   (ring/router
+    ["/is-scrambled"
+     {:get {:handler (fn [{{{:keys [scrambled word]} :query} :parameters}]
+                       {:status 200
+                        :body {:scrambled? (scramble? scrambled word)}})}}])
+   (ring/create-default-handler)))
+
+(defn start-http-server [app]
+  (jetty/run-jetty app {:port 3000 :join? false})
+  (println "HTTP server is running"))
 
 (defn -main [& args]
-  (println "hello" args))
+  (start-http-server #'web-app))

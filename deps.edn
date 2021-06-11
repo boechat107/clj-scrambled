@@ -1,4 +1,8 @@
-{:aliases
+{:deps
+ {ring/ring-jetty-adapter {:mvn/version "1.9.2"}
+  metosin/reitit-ring {:mvn/version "0.5.13"}}
+
+ :aliases
  {:test
   {:extra-paths ["test"]
    :extra-deps {io.github.cognitect-labs/test-runner
