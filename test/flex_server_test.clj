@@ -10,13 +10,16 @@
 
 (defn mk-req
   "str, str -> Response map
-  Makes a mocked request to flex-server's handler."
+  Makes a mocked request to flex-server's handler and returns its response.
+  If the body contains JSON, the function parses the content before returning
+  the response."
   [scrambled word]
   (let [resp (->> {"scrambled" scrambled "word" word}
                   (mock/request :get "/is-scrambled")
                   web-app)]
     (if (re-find #"application/json" (get-in resp [:headers "Content-Type"]))
-      (update resp :body #(parse-stream (clojure.java.io/reader %) true))
+      (update resp :body #(with-open [s (clojure.java.io/reader %)]
+                            (parse-stream s true)))
       resp)))
 
 
