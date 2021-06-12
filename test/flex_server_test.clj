@@ -56,5 +56,6 @@
       (is (== 405 (:status resp)))))
 
   (deftest test-invalid-requests
-    ;; Missing parameters.
-    (is (== 400 (:status (mk-req))))))
+    (is (== 400 (:status (mk-req))))
+    (is (== 400 (:status (mk-req {"scrambled" "a"}))))
+    (is (== 400 (:status (mk-req {"word" "a"}))))))

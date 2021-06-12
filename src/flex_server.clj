@@ -1,10 +1,12 @@
 (ns flex-server
-  (:require [reitit.ring :as ring]
-            [reitit.ring.coercion :as coercion]
+  (:require [muuntaja.core :as m]
+            [reitit.coercion.schema]
+            [reitit.ring :as ring]
+            [reitit.ring.coercion :as rrc]
             [reitit.ring.middleware.muuntaja :as muuntaja]
             [reitit.ring.middleware.parameters :as parameters]
             [ring.adapter.jetty :as jetty]
-            [muuntaja.core :as m]))
+            [schema.core :as s]))
 
 (defn scramble?
   "str, str -> bool
@@ -27,17 +29,24 @@
 (def web-app
   (ring/ring-handler
    (ring/router
+
     ["/is-scrambled"
-     {:get {:handler (fn [{{:strs [scrambled word]} :query-params}]
+     {:get {:parameters {:query {:scrambled s/Str :word s/Str}}
+            :handler (fn [{{:strs [scrambled word]} :query-params}]
                        {:status 200
                         :body {:scrambled? (scramble? scrambled word)}})}}]
+
     ;; Middleware configuration for this router.
-    {:data {:muuntaja m/instance
+    {:data {:coercion reitit.coercion.schema/coercion
+            :muuntaja m/instance
             :middleware [;; Content negotiation, request/response formatting.
                          muuntaja/format-middleware
-                         ;; Parse URL encoded query parameters.
+                         ;; Parses URL encoded query parameters.
                          parameters/parameters-middleware
-                         ]}})
+                         ;; Converts exceptions into nice responses.
+                         rrc/coerce-exceptions-middleware
+                         ;; Validates and coerces the request.
+                         rrc/coerce-request-middleware]}})
    (ring/create-default-handler)))
 
 (defn start-http-server [app]
