@@ -1,0 +1,9 @@
+image: clojure:openjdk-11-tools-deps
+
+stages:
+  - test
+
+exec-tests:
+  stage: test
+  script:
+    - clj -M:test
