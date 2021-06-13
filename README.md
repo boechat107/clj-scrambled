@@ -17,3 +17,11 @@ curl -X GET http://localhost:3000/is-scrambled\?scrambled\=ajbc\&word\=abc
 ``` bash
 clj -M:test
 ```
+
+## Development
+
+Compile Clojurescript files and open a REPL:
+
+``` bash
+clj -M:cljs
+```

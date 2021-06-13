@@ -12,4 +12,8 @@
                 org.clojure/test.check {:mvn/version "1.1.0"}
                 ring/ring-mock {:mvn/version "0.4.0"}}
    :main-opts ["-m" "cognitect.test-runner"]
-   :exec-fn cognitect.test-runner.api/test}}}
+   :exec-fn cognitect.test-runner.api/test}
+
+  :cljs
+  {:extra-deps {org.clojure/clojurescript {:mvn/version "1.10.758"}}
+   :main-opts ["-m" "cljs.main" "--compile" "flex-client" "--repl"]}}}
