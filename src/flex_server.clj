@@ -48,7 +48,6 @@
                          rrc/coerce-request-middleware]}})
    (ring/routes
     (ring/create-file-handler {:root "resources/public" :path "/"})
-    (ring/create-file-handler {:root "out" :path "/out"})
     (ring/create-default-handler))))
 
 (defn start-http-server [app]

@@ -1,3 +1,4 @@
-{:static-dir ["out/" "resources/public" "./"]
- :main "flex-client"
- :asset-path "out"}
+{:output-dir "resources/public/js/out"
+ :output-to "resources/public/js/main.js"
+ :main flex-client
+ :asset-path "/js/out"}
