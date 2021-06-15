@@ -7,6 +7,9 @@
 (defn is-scrambled [scrambled-id word-id]
   (let [scrambled-val (get-elem-val scrambled-id)
         word-val (get-elem-val word-id)]
-    (println scrambled-val word-val)
-    (js/alert scrambled-val word-val)
+    (.log js/console scrambled-val word-val)
+    (GET "http://localhost:3000/is-scrambled"
+         {:params {:scrambled scrambled-val
+                   :word word-val}
+          :handler #(.log js/console (str %))})
     ))
