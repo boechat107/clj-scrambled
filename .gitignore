@@ -2,5 +2,6 @@
 .nrepl-port
 
 out/
+resources/public/js/
 
 .emacs*
