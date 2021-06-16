@@ -11,8 +11,7 @@
   [scrambled-id word-id answer-id]
   (let [scrambled-val (get-elem-val scrambled-id)
         word-val (get-elem-val word-id)]
-    ;; TODO: parameterize the back-end address.
-    (GET "http://localhost:3000/is-scrambled"
+    (GET "/is-scrambled"
          {:params {:scrambled scrambled-val
                    :word word-val}
           :handler #(-> (.getElementById js/document answer-id)
