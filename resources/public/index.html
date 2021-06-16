@@ -16,8 +16,10 @@
       <form class="form-inline">
         <input type="text" class="form-control mb-2 mr-sm-2" id="scrambled" name="scrambled" placeholder="scrambled">
         <input type="text" class="form-control mb-2 mr-sm-2" id="word" name="word" placeholder="word">
-        <button type="button" class="btn btn-primary mb-2" onClick="flex_client.is_scrambled('scrambled', 'word')">Check</button>
+        <button type="button" class="btn btn-primary mb-2" onClick="flex_client.is_scrambled('scrambled', 'word', 'answer')">Check</button>
       </form>
+
+      <p>Is it scrambled? <span class="text-success" id="answer"></span></p>
     </div>
 
 
