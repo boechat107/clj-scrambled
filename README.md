@@ -7,6 +7,7 @@ Flexiana's challenge test.
 ## Running
 
 ``` bash
+clj -M:cljs -co ./repl_cljs.edn --compile
 clj -M -m flex-server
 
 curl -X GET http://localhost:3000/is-scrambled\?scrambled\=ajbc\&word\=abc
@@ -20,8 +21,20 @@ clj -M:test
 
 ## Development
 
-Compile Clojurescript files and open a REPL:
+Compile Clojurescript files and watch for changes:
 
 ``` bash
-clj -M:cljs
+clj -M:cljs -co ./repl_cljs.edn -w src --compile
 ```
+
+Start the web server:
+
+``` bash
+clj -M -m flex-server
+```
+
+
+
+## Known Issues - Improvements
+
+* Development environment: Hot reloading (figwheel)
