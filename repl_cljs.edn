@@ -1,0 +1,4 @@
+{:output-dir "resources/public/js/out"
+ :output-to "resources/public/js/main.js"
+ :main flex-client
+ :asset-path "/js/out"}

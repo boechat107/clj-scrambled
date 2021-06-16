@@ -35,7 +35,6 @@
             :handler (fn [{{:strs [scrambled word]} :query-params}]
                        {:status 200
                         :body {:scrambled? (scramble? scrambled word)}})}}]
-
     ;; Middleware configuration for this router.
     {:data {:coercion reitit.coercion.schema/coercion
             :muuntaja m/instance
@@ -47,7 +46,9 @@
                          rrc/coerce-exceptions-middleware
                          ;; Validates and coerces the request.
                          rrc/coerce-request-middleware]}})
-   (ring/create-default-handler)))
+   (ring/routes
+    (ring/create-file-handler {:root "resources/public" :path "/"})
+    (ring/create-default-handler))))
 
 (defn start-http-server [app]
   (jetty/run-jetty app {:port 3000 :join? false})
