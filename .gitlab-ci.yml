@@ -3,7 +3,12 @@ image: clojure:openjdk-11-tools-deps
 stages:
   - test
 
-exec-tests:
+back-tests:
   stage: test
   script:
     - clj -M:test
+
+cljs-check:
+  stage: test
+  script:
+    - clj -M:cljs -co ./repl_cljs.edn --compile
