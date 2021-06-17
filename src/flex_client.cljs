@@ -3,40 +3,36 @@
             [reagent.core :as r]
             [reagent.dom :as rd]))
 
-(defn get-elem-val [id]
-  (.-value (.getElementById js/document id)))
-
-(defn is-scrambled
-  "str, str, str -> nil
-  Gets the ID of two input elements and one text element, checks if the value
-  is scramble using the back-end, and replaces the text with the answer."
-  [scrambled-id word-id answer-id]
-  (let [scrambled-val (get-elem-val scrambled-id)
-        word-val (get-elem-val word-id)]
-    (GET "/is-scrambled"
-         {:params {:scrambled scrambled-val
-                   :word word-val}
-          :handler #(-> (.getElementById js/document answer-id)
-                        .-textContent
-                        (set! (:scrambled? %)))})))
-
-(defn mk-text-input [id-name]
-  [:input.form-control.mb-2.mr-sm-2
-   {:type "text" :id id-name :name id-name :placeholder id-name}])
+(letfn [(on-change [elem id-name atom-data]
+          (let [elem-val (-> elem .-target .-value)
+                request-data (-> @atom-data
+                                 (select-keys [:word :scrambled])
+                                 (assoc (keyword id-name) elem-val))]
+            (GET "/is-scrambled"
+                 {:params request-data
+                  :handler #(reset! atom-data
+                                    (->> (:scrambled? %)
+                                         str
+                                         (assoc request-data :answer)))})))]
+  (defn mk-text-input [id-name aval]
+    [:input.form-control.mb-2.mr-sm-2
+     {:type "text" :id id-name :name id-name :placeholder id-name
+      :value (@aval (keyword id-name))
+      :on-change #(on-change % id-name aval)}]))
 
 (defn form-component []
-  [:form.form-inline
-   (mk-text-input "scrambled")
-   (mk-text-input "word")])
-
-(defn page []
-  [:div.container.pt-3
-   [:div.jumbotron>h1 "Scrambled?"]
-   [form-component]
-   [:p "Is it scrambled?"]])
+  (let [atom-data (r/atom {:scrambled "" :word "" :answer ""})]
+    (fn []
+      [:div
+       [:div.jumbotron>h1 "Scrambled?"]
+       [:form.form-inline
+        (mk-text-input "scrambled" atom-data)
+        (mk-text-input "word" atom-data)]
+       [:p "Is it scrambled? "
+        [:span.text-success (:answer @atom-data)]]])))
 
 (defn init []
-  (rd/render [page]
+  (rd/render [form-component]
              (.getElementById js/document "primary-container")))
 
 (init)
