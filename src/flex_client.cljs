@@ -3,25 +3,28 @@
             [reagent.core :as r]
             [reagent.dom :as rd]))
 
-(letfn [(on-change [elem id-name atom-data]
+(defrecord FormData [scrambled word answer])
+
+(defrecord RequestData [scrambled word])
+
+(letfn [(on-change [elem input-key atom-data]
           (let [elem-val (-> elem .-target .-value)
-                request-data (-> @atom-data
-                                 (select-keys [:word :scrambled])
-                                 (assoc (keyword id-name) elem-val))]
+                {:keys [scrambled word]} (assoc @atom-data input-key elem-val)]
             (GET "/is-scrambled"
-                 {:params request-data
+                 {:params (RequestData. scrambled word)
                   :handler #(reset! atom-data
-                                    (->> (:scrambled? %)
-                                         str
-                                         (assoc request-data :answer)))})))]
-  (defn mk-text-input [id-name aval]
-    [:input.form-control.mb-2.mr-sm-2
-     {:type "text" :id id-name :name id-name :placeholder id-name
-      :value (@aval (keyword id-name))
-      :on-change #(on-change % id-name aval)}]))
+                                    (FormData. scrambled
+                                               word
+                                               (str (:scrambled? %))))})))]
+  (defn- mk-text-input [id-name atom-data]
+    (let [input-key (keyword id-name)]
+      [:input.form-control.mb-2.mr-sm-2
+       {:type "text" :id id-name :name id-name :placeholder id-name
+        :value (input-key @atom-data)
+        :on-change #(on-change % input-key atom-data)}])))
 
 (defn form-component []
-  (let [atom-data (r/atom {:scrambled "" :word "" :answer ""})]
+  (let [atom-data (r/atom (FormData. "" "" ""))]
     (fn []
       [:div
        [:div.jumbotron>h1 "Scrambled?"]
