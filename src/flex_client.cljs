@@ -14,6 +14,8 @@
      word :- s/Str])
 
 (letfn [(on-change [elem input-key atom-data]
+          ;; Uses the current form data stored at "atom-data" to make
+          ;; a request to the server and update the stored answer.
           (let [elem-val (-> elem .-target .-value)
                 {:keys [scrambled word]} (assoc @atom-data input-key elem-val)]
             (GET "/is-scrambled"
@@ -22,24 +24,29 @@
                                     (FormData. scrambled
                                                word
                                                (str (:scrambled? %))))})))]
-  (defn- mk-text-input [id-name atom-data]
+  (defn- mk-text-input
+    "str, ReagentAtom[FormData] -> HiccupVector"
+    [id-name atom-data]
     (let [input-key (keyword id-name)]
       [:input.form-control.mb-2.mr-sm-2
        {:type "text" :id id-name :name id-name :placeholder id-name
         :value (input-key @atom-data)
         :on-change #(on-change % input-key atom-data)}])))
 
-(defn form-component []
+(defn form-component
+  "A form component that sends data to the server and renders its
+  answer for every change at any input."
+  []
   (let [atom-data (r/atom (FormData. "" "" ""))]
     (fn []
       (let [answer (:answer @atom-data)]
         [:div
          [:div.jumbotron>h1 "Scrambled?"]
          [:form.form-inline
-          (mk-text-input "scrambled" atom-data)
-          (mk-text-input "word" atom-data)]
+          [mk-text-input "scrambled" atom-data]
+          [mk-text-input "word" atom-data]]
          [:p "Is it scrambled? "
-          [:span {:class (if (== answer "true") "text-success" "text-danger")}
+          [:span {:class (if (= answer "true") "text-success" "text-danger")}
            answer]]]))))
 
 (defn init []
