@@ -11,4 +11,4 @@ back-tests:
 cljs-check:
   stage: test
   script:
-    - clj -M:cljs -co ./repl_cljs.edn --compile
+    - clj -M:cljs -co ./cljs_prod.edn --compile
