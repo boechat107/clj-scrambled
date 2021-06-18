@@ -37,4 +37,6 @@ clj -M -m flex-server
 
 ## Known Issues - Improvements
 
-* Development environment: Hot reloading (figwheel)
+* Improve the Cljs development environment (figwheel)
+* Use browser automation (or some [jsdom](https://github.com/jsdom/jsdom))
+to test the front-end working with the server.
