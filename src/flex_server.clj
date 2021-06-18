@@ -48,11 +48,13 @@
                          rrc/coerce-request-middleware]}})
    (ring/routes
     (ring/create-file-handler {:root "resources/public" :path "/"})
+    ;; This makes the server returns 404 for nonexistent resources.
     (ring/create-default-handler))))
 
-(defn start-http-server [app]
-  (jetty/run-jetty app {:port 3000 :join? false})
-  (println "HTTP server is running"))
+(defn start-http-server [app port]
+  (let [port (Integer/parseInt (or port "3000"))]
+    (jetty/run-jetty app {:port port :join? false})
+    (println "HTTP server is running:" port)))
 
 (defn -main [& args]
-  (start-http-server #'web-app))
+  (start-http-server #'web-app (first args)))
