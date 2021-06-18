@@ -5,6 +5,8 @@
 A simple web application for checking if one string could be
 rearranged into another.
 
+![screenshot](./screenshot.png)
+
 ## Requirements
 
 * JVM (tested with openjdk 11)
