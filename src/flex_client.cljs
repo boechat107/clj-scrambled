@@ -41,7 +41,9 @@
     (fn []
       (let [answer (:answer @atom-data)]
         [:div
-         [:div.jumbotron>h1 "Scrambled?"]
+         [:div.jumbotron
+          [:h1>b "Scrambled"]
+          [:p "Could one string be rearranged into the other?"]]
          [:form.form-inline
           [mk-text-input "scrambled" atom-data]
           [mk-text-input "word" atom-data]]
