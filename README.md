@@ -1,5 +1,7 @@
 # clj-scrambled
 
+![scrambled test status](https://github.com/boechat107/clj-scrambled/actions/workflows/test.yml/badge.svg)
+
 A simple web application for checking if one string could be
 rearranged into another.
 
