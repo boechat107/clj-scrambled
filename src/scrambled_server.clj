@@ -23,7 +23,8 @@
                     (update freqs c dec)))]
     (->> word
          (reduce counter (frequencies scrambled))
-         seq)))
+         empty?
+         not)))
 
 (def web-app
   (ring/ring-handler
