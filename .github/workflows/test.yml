@@ -34,7 +34,7 @@ jobs:
             maven-
 
       - name: Server tests
-        run: clj -M:test
+        run: clojure -M:test
 
       - name: Client compilation check
-        run: clj -M:cljs -co ./cljs_prod.edn --compile
+        run: clojure -M:cljs -co ./cljs_prod.edn --compile
