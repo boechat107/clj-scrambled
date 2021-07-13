@@ -1,6 +1,4 @@
-# flex-server
-
-[![pipeline status](https://gitlab.com/boechat107-challenges/flexiana/badges/master/pipeline.svg)](https://gitlab.com/boechat107-challenges/flexiana/-/commits/master)
+# clj-scrambled
 
 A simple web application for checking if one string could be
 rearranged into another.
@@ -16,7 +14,7 @@ rearranged into another.
 
 ``` bash
 clj -M:cljs -co ./cljs_prod.edn --compile
-clj -M -m flex-server [port]
+clj -M -m scrambled-server [port]
 ```
 
 ## Testing
@@ -36,7 +34,7 @@ clj -M:cljs -co ./cljs_dev.edn -w src --compile
 Start the web server:
 
 ``` bash
-clj -M -m flex-server [port]
+clj -M -m scrambled-server [port]
 ```
 
 

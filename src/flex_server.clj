@@ -1,4 +1,4 @@
-(ns flex-server
+(ns scrambled-server
   (:require [muuntaja.core :as m]
             [reitit.coercion.schema]
             [reitit.ring :as ring]
@@ -23,8 +23,7 @@
                     (update freqs c dec)))]
     (->> word
          (reduce counter (frequencies scrambled))
-         empty?
-         not)))
+         seq)))
 
 (def web-app
   (ring/ring-handler
