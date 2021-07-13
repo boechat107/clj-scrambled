@@ -1,4 +1,4 @@
-(ns clj-scrambled-test
+(ns scrambled-test
   (:require [clojure.test :refer [deftest testing is]]
             [clojure.test.check.generators :as gen]
             [cheshire.core :refer [parse-stream]]
