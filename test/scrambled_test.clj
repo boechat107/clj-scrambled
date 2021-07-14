@@ -1,16 +1,16 @@
-(ns flex-server-test
-  (:require [clojure.test :refer :all]
+(ns scrambled-test
+  (:require [clojure.test :refer [deftest testing is]]
             [clojure.test.check.generators :as gen]
-            [cheshire.core :refer [parse-string parse-stream]]
+            [cheshire.core :refer [parse-stream]]
             [ring.mock.request :as mock]
-            [flex-server :refer [scramble? web-app]]))
+            [scrambled-server :refer [scramble? web-app]]))
 
 (defn scramble [word]
   (-> (seq word) shuffle clojure.string/join))
 
 (defn mk-req
   "Optional[map] -> Response map
-  Makes a request to flex-server's handler and returns its response.
+  Makes a request to clj-scrambled's handler and returns its response.
   If the body contains JSON, the function parses the content before returning
   the response."
   ([]

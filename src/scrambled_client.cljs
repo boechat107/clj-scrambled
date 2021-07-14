@@ -1,4 +1,4 @@
-(ns flex-client
+(ns scrambled-client
   (:require [ajax.core :refer [GET]]
             [reagent.core :as r]
             [reagent.dom :as rd]

@@ -1,4 +1,4 @@
-(ns flex-server
+(ns scrambled-server
   (:require [muuntaja.core :as m]
             [reitit.coercion.schema]
             [reitit.ring :as ring]
